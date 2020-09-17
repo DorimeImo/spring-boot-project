@@ -2,7 +2,7 @@ package com.example.springbootproject.controller;
 
 import javax.validation.Valid;
 
-import com.example.springbootproject.model.Order;
+import com.example.springbootproject.model.product.Order;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;

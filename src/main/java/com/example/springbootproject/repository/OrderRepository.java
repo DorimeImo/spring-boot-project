@@ -1,11 +1,9 @@
 package com.example.springbootproject.repository;
 
-import com.example.springbootproject.model.Order;
+import com.example.springbootproject.model.product.Order;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
 
-import java.util.Date;
-import java.util.List;
-
-
+@Repository
 public interface OrderRepository extends CrudRepository<Order, Long> {
 }
