@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Taco Cloud</title>
+    <link rel="stylesheet" th:href="@{/styles.css}" />
+</head>
+
+<body>
+    <h1>Confirm Taco Design</h1>
+    <form method="POST" th:action="@{/design/confirm-taco}" th:object="${taco}">
+
+        <h3>Check and save this taco to your Taco List:</h3>
+        Taco name: <div th:text="${taco.getName()}"></div>
+        <input type="hidden" th:field="*{name}" >
+        Taco ingredients:
+            <div th:each="ingredient : ${taco.getIngredients()}">
+                <td th:text="${ingredient.toString()}"></td>
+            </div>
+            <input type="hidden" th:field="*{ingredients}" >
+            Taco price: <p th:text="${taco.getPrice()}"></p>
+            <input type="hidden" th:field="*{price}" >
+
+        <button type="submit" value="Submit">Save your taco</button>
+    </form>
+</body>
+
+</html>
