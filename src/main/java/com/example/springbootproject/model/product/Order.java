@@ -33,9 +33,9 @@ public class Order {
     @Size(min=1, message="You must choose at least 1 taco")
     private List<Taco> tacos;
 
-    public int calculateTotalPrice(){
-        this.totalPrice = 0;
-        if(tacos.size()!=0){
+    public int getTotalPrice() {
+        totalPrice = 0;
+        if(tacos.size()>0){
             for(Taco i: tacos){
                 totalPrice+=i.getPrice();
             }
@@ -54,6 +54,7 @@ public class Order {
     void placedAt() {
         this.createdAt = LocalDate.now();
         increaseRating();
+        getTotalPrice();
     }
 
     private void increaseRating(){

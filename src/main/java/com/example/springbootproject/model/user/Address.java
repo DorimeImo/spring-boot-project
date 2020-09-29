@@ -4,12 +4,13 @@ import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.io.Serializable;
 
 @Data
 @Entity
 @NoArgsConstructor
 @Table(name="ADDRESS")
-public class Address {
+public class Address implements Serializable {
 
     @Id
     @GeneratedValue
@@ -29,4 +30,16 @@ public class Address {
 
     @NotBlank(message="Zip code is required")
     private String zip;
+
+    @Override
+    public String toString() {
+        return "Address{" +
+                "address_id=" + address_id +
+                ", name='" + name + '\'' +
+                ", street='" + street + '\'' +
+                ", city='" + city + '\'' +
+                ", state='" + state + '\'' +
+                ", zip='" + zip + '\'' +
+                '}';
+    }
 }

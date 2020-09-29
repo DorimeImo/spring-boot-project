@@ -9,27 +9,35 @@
         <h1>List of your custom Tacos:</h1>
         <h2>Total order price</h2>
 
-            <tr th:text="${session.chosenTacos.calculateTotalPrice()}"></tr>
+        <div>
 
-<!--        <p th:text="${session.chosenTacos}" th:unless="${session==null}"></p>-->
+            <form th:if="${session.chosenTacos != null}" th:action="@{/design/see-cart}">
+                Total price <div th:text="${session.chosenTacos.getTotalPrice()}"></div>
+                <input type="submit" value="Continue with order">
+            </form>
 
-                     <tr th:each="taco : ${customTacos}">
-                         <br>
-                         Taco name:
-                         <td th:text="${taco.name}"></td>
-                         <br>
-                         Taco ingredients:
-                         <div th:each="ingredient : ${taco.getIngredients()}">
-                            <td th:text="${ingredient.toString()}"></td>
-                         </div>
-                         Taco price:
-                         <td th:text="${taco.price}"></td>
-                         <form method="post" th:action="@{/design/add-taco-to-order}">
-                             <input type="hidden" th:name="id" th:value="${taco.id}">
-                             <button>Add to order</button>
-                         </form>
-                         <br><br>
-                     </tr>
+        </div>
+
+        <div>
+            <tr th:each="taco : ${customTacos}">
+                <br>
+                Taco name:
+                <td th:text="${taco.name}"></td>
+                <br>
+                Taco ingredients:
+                <div th:each="ingredient : ${taco.getIngredients()}">
+                    <td th:text="${ingredient.toString()}"></td>
+                </div>
+                Taco price:
+                <td th:text="${taco.price}"></td>
+                <form method="post" th:action="@{/design/add-taco-to-order}">
+                    <input type="hidden" th:name="id" th:value="${taco.id}">
+                    <button>Add to order</button>
+                </form>
+                <br><br>
+            </tr>
+        </div>
+
 
     </body>
 </html>

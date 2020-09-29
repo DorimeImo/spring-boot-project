@@ -6,8 +6,10 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import com.example.springbootproject.model.user.User;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -15,7 +17,7 @@ import java.util.List;
 @Entity
 @NoArgsConstructor
 @Table(name="TACO")
-public class Taco {
+public class Taco implements Serializable {
 
     @Id
     @GeneratedValue
@@ -35,6 +37,7 @@ public class Taco {
     @Column(name="taco_rating")
     private int rating;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name="user_id")
     private User creator;
@@ -59,11 +62,25 @@ public class Taco {
     }
 
     public int getPrice(){
+        price=0;
         if(ingredients.size()>0){
             for (Ingredient i: ingredients){
-                this.price+=i.getPrice();
+                price+=i.getPrice();
             }
         }
         return this.price;
+    }
+
+    @Override
+    public String toString() {
+        return "Taco{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", createdAt=" + createdAt +
+                ", price=" + price +
+                ", rating=" + rating +
+                ", creator=" + creator +
+                ", ingredients=" + ingredients +
+                '}';
     }
 }

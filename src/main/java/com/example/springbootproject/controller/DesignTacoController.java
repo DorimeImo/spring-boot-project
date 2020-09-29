@@ -3,16 +3,20 @@ package com.example.springbootproject.controller;
 
 import java.security.Principal;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
+import com.example.springbootproject.jms.JmsServerAgent;
 import com.example.springbootproject.model.product.Ingredient;
 import com.example.springbootproject.model.product.Ingredient.Type;
 import com.example.springbootproject.model.product.Order;
 import com.example.springbootproject.model.product.Taco;
+import com.example.springbootproject.model.user.Address;
+import com.example.springbootproject.model.user.Payment;
 import com.example.springbootproject.model.user.User;
 import com.example.springbootproject.repository.IngredientRepository;
 import com.example.springbootproject.repository.TacoRepository;
@@ -25,6 +29,8 @@ import org.springframework.web.bind.annotation.*;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.servlet.ModelAndView;
+import org.thymeleaf.spring5.context.webflux.IReactiveDataDriverContextVariable;
+import org.thymeleaf.spring5.context.webflux.ReactiveDataDriverContextVariable;
 
 
 @Slf4j
@@ -76,7 +82,7 @@ public class DesignTacoController {
     }
 
     @RequestMapping(value = "/confirm-taco", method = RequestMethod.POST)
-    public String confirmTacoDesign(@Valid Taco taco, Principal principal, Model model){
+    public String confirmTacoDesign(Taco taco, Principal principal, Model model){
         log.info("inside confirmTacoDesign method");
         User user = (User)repositoryUser.findByName(principal.getName());
         if(user!=null)
@@ -116,6 +122,66 @@ public class DesignTacoController {
         }
         return new ModelAndView("redirect:/design/list-custom-tacos");
     }
+
+    @RequestMapping(value = "/see-cart", method = RequestMethod.GET)
+    public String showCart(){
+        return "cartView";
+    }
+
+    @RequestMapping(value = "/delete-from-cart", method = RequestMethod.POST)
+    public String deleteTacoFromCart(@RequestParam(name = "id") Long id, HttpSession session){
+        Order order= (Order)session.getAttribute("chosenTacos");
+        Iterator iterator = order.getTacos().iterator();
+        while (iterator.hasNext()){
+            Taco taco= (Taco)iterator.next();
+            if(taco.getId().equals(id)) {
+                iterator.remove();
+                break;
+            }
+        }
+        session.setAttribute("chosenOrder", order);
+        return "cartView";
+    }
+
+    @RequestMapping(value = "/continue-to-payment", method = RequestMethod.GET)
+    public String  showPaymentForm(Model model, Principal principal){
+        User user = (User)repositoryUser.findByName(principal.getName());
+        if(user.getPayment()!=null){
+            model.addAttribute("payment", user.getPayment());
+    }
+        else {
+            model.addAttribute("payment", new Payment());
+        }
+        return "paymentForm";
+    }
+
+    @RequestMapping(value = "/confirm-payment", method = RequestMethod.POST)
+    public String confirmPayment(@Valid Payment payment, Errors errors, Principal principal, Model model){
+        if (errors.hasErrors())
+            return "paymentForm";
+        User user=(User)repositoryUser.findByName(principal.getName());
+        user.setPayment(payment);
+        repositoryUser.save(user);
+        if(user.getAddress()!=null){
+            model.addAttribute("address", user.getAddress());
+        }
+        else {
+            model.addAttribute("address", new Address());
+        }
+        return "addressForm";
+    }
+
+    @RequestMapping(value = "/confirm-address", method = RequestMethod.POST)
+    public String confirmAddress(@Valid Address address, Errors errors, Principal principal, Model model){
+        if(errors.hasErrors()){
+         return "addressForm";
+        }
+        User user=(User)repositoryUser.findByName(principal.getName());
+        user.setAddress(address);
+        repositoryUser.save(user);
+        return "orderConfirmation";
+    }
+
 
     private List<Ingredient> filterByType(List<Ingredient> ingredients, Type type) {
         return ingredients

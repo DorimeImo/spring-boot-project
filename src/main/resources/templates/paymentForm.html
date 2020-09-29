@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Taco Cloud</title>
+</head>
+    <body>
+
+    <form method="POST" th:action="@{/design/confirm-payment}" th:object="${payment}">
+
+        <h2>Payment details:</h2>
+        <br>
+
+        <label for="name">Name: </label>
+        <input type="text" id="name" th:field="*{name}">
+        <span class="validationError"
+              th:if="${#fields.hasErrors('name')}"
+              th:errors="*{name}">CC Num Error</span>
+        <br/>
+
+        <label for="ccNumber">ccNumber: </label>
+        <input type="text" id="ccNumber" th:field="*{ccNumber}">
+        <span class="validationError"
+              th:if="${#fields.hasErrors('ccNumber')}"
+              th:errors="*{ccNumber}">CC Num Error</span>
+        <br/>
+
+        <label for="ccExpiration">ccExpiration: </label>
+        <input type="text" id="ccExpiration" th:field="*{ccExpiration}">
+        <span class="validationError"
+              th:if="${#fields.hasErrors('ccExpiration')}"
+              th:errors="*{ccExpiration}">CC Num Error</span>
+        <br/>
+
+        <label for="ccCVV">ccCVV: </label>
+        <input type="text" id="ccCVV" th:field="*{ccCVV}">
+        <span class="validationError"
+              th:if="${#fields.hasErrors('ccCVV')}"
+              th:errors="*{ccCVV}">CC Num Error</span>
+        <br/>
+
+        <input type="submit" value="Confirm payment">
+    </form>
+
+
+
+    </body>
+</html>

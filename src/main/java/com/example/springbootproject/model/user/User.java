@@ -20,7 +20,7 @@ import java.util.Set;
 @Entity
 @NoArgsConstructor
 @Table(name="USER")
-public class User {
+public class User{
 
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
@@ -55,11 +55,11 @@ public class User {
     @OneToMany(mappedBy="creator")
     private List <Order> orderHistory;
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.ALL})
     @JoinColumn(name="address_id")
     private Address address;
 
-    @OneToOne
+    @OneToOne(cascade = {CascadeType.ALL})
     @JoinColumn(name="payment_id")
     private Payment payment;
 

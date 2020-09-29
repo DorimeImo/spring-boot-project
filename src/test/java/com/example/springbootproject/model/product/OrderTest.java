@@ -24,7 +24,5 @@ class OrderTest {
         order.addTaco(taco);
         order.addTaco(taco);
         order.addTaco(taco);
-        System.out.println(order.calculateTotalPrice());
-
     }
 }

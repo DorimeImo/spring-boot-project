@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Taco Cloud</title>
+    <link rel="stylesheet" th:href="@{/styles.css}" />
+</head>
+
+<body>
+
+    <h2>Address details</h2>
+
+    <form method="post" th:object="${address}" th:action="@{/design/confirm-address}">
+
+        <label for="name">Receiver name:</label>
+        <input type="text" id="name" th:field="*{name}">
+        <span th:if="${#fields.hasErrors('name')}"
+              th:error="*{name}">Receiver name Error</span>
+        <br>
+
+        <label for="street">Receiver street:</label>
+        <input type="text" id="street" th:field="*{street}">
+        <span th:if="${#fields.hasErrors('street')}"
+              th:error="*{street}">Receiver street Error</span>
+        <br>
+
+        <label for="city">Receiver city:</label>
+        <input type="text" id="city" th:field="*{city}">
+        <span th:if="${#fields.hasErrors('city')}"
+              th:error="*{city}">Receiver city Error</span>
+        <br>
+
+        <label for="state">Receiver state:</label>
+        <input type="text" id="state" th:field="*{state}">
+        <span th:if="${#fields.hasErrors('state')}"
+              th:error="*{state}">Receiver state Error</span>
+        <br>
+
+        <label for="zip">Receiver zip:</label>
+        <input type="text" id="zip" th:field="*{zip}">
+        <span th:if="${#fields.hasErrors('zip')}"
+              th:error="*{zip}">Receiver zip Error</span>
+        <br>
+
+        <input type="submit" value="Confirm address">
+    </form>
+
+</body>
+</html>

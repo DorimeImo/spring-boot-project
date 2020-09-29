@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Taco Cloud</title>
+</head>
+<body>
+
+
+
+        <form method="POST" th:if="${session.chosenTacos != null}" th:each="taco : ${session.chosenTacos.getTacos()}"
+              th:action="@{/design/delete-from-cart}">
+            Taco name: <span th:text="${taco.getName()}"></span>
+            Taco ingredients:
+            <div th:each="ingredient : ${taco.getIngredients()}">
+            Ingredient: <span th:text="${ingredient.getName()}"></span>
+            </div>
+            Taco price: <span th:text="${taco.getPrice()}"></span>
+            <input type="hidden" th:name="id" th:value="${taco.getId()}">
+            <input type="submit" value="Delete from Cart">
+            <br><br>
+        </form>
+
+<form method="GET" th:action="@{/design/continue-to-payment}">
+    <input type="submit" value="Continue to payment">
+</form>
+
+</body>
+</html>
